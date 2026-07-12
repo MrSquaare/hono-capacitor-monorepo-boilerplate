@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "name": "@projectname/shared-config",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./eslint": "./src/eslint.js"
+  },
+  "scripts": {
+    "check": "eslint . && prettier . --check",
+    "check:fix": "eslint . --fix && prettier . --write"
+  },
+  "peerDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint-plugin-perfectionist": "^5.10.0",
+    "typescript-eslint": "^8.63.0"
+  },
+  "devDependencies": {
+    "eslint": "^10.7.0",
+    "prettier": "^3.9.5"
+  }
+}

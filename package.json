@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "name": "projectname",
+  "type": "module",
+  "scripts": {
+    "root:check": "eslint . && prettier . --check",
+    "root:check:fix": "eslint . --fix && prettier . --write",
+    "dev": "turbo dev --continue",
+    "build": "turbo build",
+    "check": "turbo check --continue",
+    "check:fix": "turbo check:fix --continue",
+    "test": "turbo test",
+    "clean": "turbo clean --continue && del-cli .turbo/ **/.turbo/ node_modules/.cache/",
+    "deps:update": "taze",
+    "deps:upgrade": "taze -w"
+  },
+  "devDependencies": {
+    "@projectname/shared-config": "workspace:*",
+    "del-cli": "^7.0.0",
+    "eslint": "^10.7.0",
+    "prettier": "^3.9.5",
+    "taze": "^19.14.1",
+    "turbo": "^2.10.4"
+  },
+  "packageManager": "pnpm@11.11.0"
+}

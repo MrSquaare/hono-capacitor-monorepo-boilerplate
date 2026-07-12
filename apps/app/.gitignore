@@ -1,0 +1,32 @@
+# Node
+node_modules/
+
+# Turborepo
+.turbo/
+
+## Panda
+styled-system
+styled-system-studio
+
+# Environment variables
+*.env*
+
+# Logs
+*.log
+
+# Build
+dist/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+
+# Coverage
+.nyc_output/
+coverage/
+
+# macOS
+.DS_Store

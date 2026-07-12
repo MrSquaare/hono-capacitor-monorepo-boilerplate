@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "name": "@projectname/shared",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./constants": "./dist/constants/index.mjs",
+    "./schemas": "./dist/schemas/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "check": "tsc --noEmit && eslint . && prettier . --check",
+    "check:fix": "tsc --noEmit && eslint . --fix && prettier . --write",
+    "clean": "del-cli dist/"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@projectname/shared-config": "workspace:*",
+    "del-cli": "^7.0.0",
+    "eslint": "^10.7.0",
+    "prettier": "^3.9.5",
+    "tsdown": "^0.22.4",
+    "typescript": "^6.0.3"
+  }
+}

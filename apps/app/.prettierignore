@@ -1,0 +1,6 @@
+android/
+ios/
+project.inlang/**
+!project.inlang/settings.json
+src/paraglide/
+src/routeTree.gen.ts
