@@ -1,0 +1,1 @@
+# hono-capacitor-monorepo-boilerplate
