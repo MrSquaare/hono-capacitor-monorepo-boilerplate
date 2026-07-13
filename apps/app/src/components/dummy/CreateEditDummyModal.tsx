@@ -73,7 +73,7 @@ export const CreateEditDummyModal: FC<CreateEditDummyModalProps> = ({
     if (open) {
       formReset();
     }
-  }, [open, displayDummy, formReset]);
+  }, [open, formReset]);
 
   return (
     <Modal
