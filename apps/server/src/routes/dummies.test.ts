@@ -1,7 +1,7 @@
+import "../test/hono.mock";
 import { mockedDBMiddleware } from "../middlewares/db.mock";
 import { mockedDummyServiceMiddleware } from "../middlewares/dummy.mock";
 import { DummyServiceMock } from "../services/dummy.mock";
-import { useSpy } from "../test/hono.mock";
 
 import { APIErrorCode } from "@projectname/shared/schemas";
 import { env } from "cloudflare:workers";
@@ -16,9 +16,12 @@ describe("dummiesApp", () => {
 
   describe("initialization", () => {
     it("setup up middlewares", async () => {
-      expect(useSpy).toHaveBeenCalledTimes(2);
-      expect(useSpy).toHaveBeenNthCalledWith(1, mockedDBMiddleware);
-      expect(useSpy).toHaveBeenNthCalledWith(2, mockedDummyServiceMiddleware);
+      expect(dummiesApp.use).toHaveBeenCalledTimes(2);
+      expect(dummiesApp.use).toHaveBeenNthCalledWith(1, mockedDBMiddleware);
+      expect(dummiesApp.use).toHaveBeenNthCalledWith(
+        2,
+        mockedDummyServiceMiddleware,
+      );
     });
   });
 

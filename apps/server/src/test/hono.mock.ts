@@ -1,10 +1,4 @@
-import type { Hono } from "hono";
-
-import { type Mock, vi } from "vitest";
-
-export let useSpy: Mock<typeof Hono.prototype.use>;
-export let routeSpy: Mock<typeof Hono.prototype.route>;
-export let onErrorSpy: Mock<typeof Hono.prototype.onError>;
+import { vi } from "vitest";
 
 vi.mock("hono", async (importOriginal) => {
   const actual = await importOriginal<typeof import("hono")>();
@@ -14,22 +8,24 @@ vi.mock("hono", async (importOriginal) => {
       super(...args);
 
       const originalUse = this.use.bind(this);
-      useSpy = vi.fn((...useArgs: Parameters<typeof originalUse>) =>
-        originalUse(...useArgs),
+      const instanceUseSpy = vi.fn(
+        (...useArgs: Parameters<typeof originalUse>) => originalUse(...useArgs),
       );
-      this.use = useSpy as unknown as typeof this.use;
+      this.use = instanceUseSpy as unknown as typeof this.use;
 
       const originalRoute = this.route.bind(this);
-      routeSpy = vi.fn((...routeArgs: Parameters<typeof originalRoute>) =>
-        originalRoute(...routeArgs),
+      const instanceRouteSpy = vi.fn(
+        (...routeArgs: Parameters<typeof originalRoute>) =>
+          originalRoute(...routeArgs),
       );
-      this.route = routeSpy as unknown as typeof this.route;
+      this.route = instanceRouteSpy as unknown as typeof this.route;
 
       const originalOnError = this.onError.bind(this);
-      onErrorSpy = vi.fn((...onErrorArgs: Parameters<typeof originalOnError>) =>
-        originalOnError(...onErrorArgs),
+      const instanceOnErrorSpy = vi.fn(
+        (...onErrorArgs: Parameters<typeof originalOnError>) =>
+          originalOnError(...onErrorArgs),
       );
-      this.onError = onErrorSpy as unknown as typeof this.onError;
+      this.onError = instanceOnErrorSpy as unknown as typeof this.onError;
     }
   }
 
