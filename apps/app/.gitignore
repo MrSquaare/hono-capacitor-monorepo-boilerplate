@@ -10,6 +10,7 @@ styled-system-studio
 
 # Environment variables
 *.env*
+!.env.example
 
 # Logs
 *.log
