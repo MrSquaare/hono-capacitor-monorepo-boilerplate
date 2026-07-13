@@ -1,7 +1,8 @@
-import { wsMessageSchema } from "@projectname/shared/schemas";
+import { APIErrorCode, wsMessageSchema } from "@projectname/shared/schemas";
 import { type Connection, Server } from "partyserver";
+import { z } from "zod";
 
-import { getErrorMessage } from "../utils/error";
+import { getAPIError, getValidationAPIError } from "../utils/error";
 
 export class DummiesParty extends Server {
   static options = {
@@ -16,17 +17,44 @@ export class DummiesParty extends Server {
 
   async onRequest(request: Request): Promise<Response> {
     if (request.method === "POST") {
+      let json: unknown;
+
       try {
-        const json = await request.json();
+        json = await request.json();
+      } catch {
+        return new Response(
+          JSON.stringify(
+            getAPIError(APIErrorCode.BAD_REQUEST, "Malformed JSON"),
+          ),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            status: 400,
+          },
+        );
+      }
+
+      try {
         const validated = wsMessageSchema.parse(json);
 
         this.broadcast(JSON.stringify(validated));
 
         return new Response("OK", { status: 200 });
       } catch (error) {
-        const message = getErrorMessage(error);
+        if (error instanceof z.ZodError) {
+          return new Response(
+            JSON.stringify(getValidationAPIError(error, "json")),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              status: 400,
+            },
+          );
+        }
 
-        return new Response(message, { status: 400 });
+        throw error;
       }
     }
 

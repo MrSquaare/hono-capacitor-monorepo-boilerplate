@@ -4,6 +4,7 @@ import { type Mock, vi } from "vitest";
 
 export let useSpy: Mock<typeof Hono.prototype.use>;
 export let routeSpy: Mock<typeof Hono.prototype.route>;
+export let onErrorSpy: Mock<typeof Hono.prototype.onError>;
 
 vi.mock("hono", async (importOriginal) => {
   const actual = await importOriginal<typeof import("hono")>();
@@ -23,6 +24,12 @@ vi.mock("hono", async (importOriginal) => {
         originalRoute(...routeArgs),
       );
       this.route = routeSpy as unknown as typeof this.route;
+
+      const originalOnError = this.onError.bind(this);
+      onErrorSpy = vi.fn((...onErrorArgs: Parameters<typeof originalOnError>) =>
+        originalOnError(...onErrorArgs),
+      );
+      this.onError = onErrorSpy as unknown as typeof this.onError;
     }
   }
 

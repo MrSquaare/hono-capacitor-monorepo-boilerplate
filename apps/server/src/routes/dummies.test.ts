@@ -108,6 +108,38 @@ describe("dummiesApp", () => {
       expect(DummyServiceMock.create).toHaveBeenNthCalledWith(1, payload);
     });
 
+    it("creates a new dummy even if broadcasting the notification fails", async () => {
+      const payload = { age: 30, name: "Bob" };
+      const createdDummy = { age: 30, id: 2, name: "Bob" };
+
+      DummyServiceMock.create.mockResolvedValueOnce(createdDummy);
+
+      const mockedEnv = {
+        ...env,
+        DUMMIES: {
+          get: () => ({
+            fetch: () => {
+              throw new Error("Notification delivery failed");
+            },
+          }),
+          idFromName: () => ({}),
+        },
+      };
+
+      const res = await dummiesApp.request(
+        "/",
+        {
+          body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" },
+          method: "POST",
+        },
+        mockedEnv,
+      );
+
+      expect(res.status).toBe(201);
+      expect(await res.json()).toEqual(createdDummy);
+    });
+
     it("returns 400 when JSON body is invalid", async () => {
       const payload = { age: "invalid" };
       const res = await dummiesApp.request(

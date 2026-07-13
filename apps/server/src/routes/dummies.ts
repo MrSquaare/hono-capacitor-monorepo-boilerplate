@@ -7,6 +7,7 @@ import { validator } from "../lib/validator";
 import { dbMiddleware } from "../middlewares/db";
 import { dummyServiceMiddleware } from "../middlewares/dummy";
 import { createDummyPayloadSchema } from "../schemas/dummy";
+import { getAPIError } from "../utils/error";
 
 export const dummiesApp = new Hono()
   .use(dbMiddleware)
@@ -29,7 +30,7 @@ export const dummiesApp = new Hono()
 
       if (!dummy) {
         return c.json(
-          { code: APIErrorCode.NOT_FOUND, message: "Dummy not found" },
+          getAPIError(APIErrorCode.NOT_FOUND, "Dummy not found"),
           404,
         );
       }
@@ -47,12 +48,16 @@ export const dummiesApp = new Hono()
       c.env.DUMMIES.idFromName(DUMMIES_NOTIFICATION_ROOM_NAME),
     );
 
-    await stub.fetch("http://localhost/", {
-      body: JSON.stringify({
-        type: "DUMMY_CREATED",
-      }),
-      method: "POST",
-    });
+    try {
+      await stub.fetch("http://localhost/", {
+        body: JSON.stringify({
+          type: "DUMMY_CREATED",
+        }),
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("Failed to send DUMMY_CREATED notification:", error);
+    }
 
     return c.json(dummy, 201);
   })
@@ -69,7 +74,7 @@ export const dummiesApp = new Hono()
 
       if (!dummy) {
         return c.json(
-          { code: APIErrorCode.NOT_FOUND, message: "Dummy not found" },
+          getAPIError(APIErrorCode.NOT_FOUND, "Dummy not found"),
           404,
         );
       }
@@ -88,7 +93,7 @@ export const dummiesApp = new Hono()
 
       if (!dummy) {
         return c.json(
-          { code: APIErrorCode.NOT_FOUND, message: "Dummy not found" },
+          getAPIError(APIErrorCode.NOT_FOUND, "Dummy not found"),
           404,
         );
       }

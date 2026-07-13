@@ -1,8 +1,9 @@
 import type { ValidationTargets } from "hono";
+import type { ZodType } from "zod";
 
 import { zValidator } from "@hono/zod-validator";
-import { APIErrorCode } from "@projectname/shared/schemas";
-import { z, type ZodType } from "zod";
+
+import { getValidationAPIError } from "../utils/error";
 
 export const validator = <
   Target extends keyof ValidationTargets,
@@ -13,18 +14,7 @@ export const validator = <
 ) => {
   return zValidator(target, schema, (result, c) => {
     if (!result.success) {
-      const flatErrors = z.flattenError(result.error);
-
-      return c.json(
-        {
-          code: APIErrorCode.VALIDATION_FAILED,
-          fields: flatErrors.fieldErrors,
-          form: flatErrors.formErrors,
-          message: "Validation failed",
-          target,
-        },
-        400,
-      );
+      return c.json(getValidationAPIError(result.error, target), 400);
     }
   });
 };

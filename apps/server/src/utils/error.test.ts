@@ -1,6 +1,8 @@
+import { APIErrorCode } from "@projectname/shared/schemas";
 import { describe, expect, it } from "vitest";
+import { z } from "zod";
 
-import { getErrorMessage } from "./error";
+import { getAPIError, getErrorMessage, getValidationAPIError } from "./error";
 
 describe("getErrorMessage", () => {
   it("returns error message when value is an instance of Error", () => {
@@ -50,5 +52,41 @@ describe("getErrorMessage", () => {
     const result = getErrorMessage(error);
 
     expect(result).toEqual("undefined");
+  });
+});
+
+describe("getAPIError", () => {
+  it("returns an APIError", () => {
+    const result = getAPIError(APIErrorCode.NOT_FOUND, "Not found message");
+
+    expect(result).toEqual({
+      code: APIErrorCode.NOT_FOUND,
+      message: "Not found message",
+    });
+  });
+});
+
+describe("getValidationAPIError", () => {
+  it("returns a ValidationAPIError", () => {
+    const schema = z.object({
+      name: z.string(),
+    });
+    const parseResult = schema.safeParse({});
+
+    expect(parseResult.success).toBe(false);
+
+    if (!parseResult.success) {
+      const result = getValidationAPIError(parseResult.error, "json");
+
+      expect(result).toEqual({
+        code: APIErrorCode.VALIDATION_FAILED,
+        fields: {
+          name: ["Invalid input: expected string, received undefined"],
+        },
+        form: [],
+        message: "Validation failed",
+        target: "json",
+      });
+    }
   });
 });

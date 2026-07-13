@@ -77,6 +77,25 @@ describe("DummiesParty", () => {
     clientWS!.close();
   });
 
+  it("returns 400 when POST payload is malformed JSON", async () => {
+    const id = env.DUMMIES.idFromName("test-room");
+    const stub = env.DUMMIES.get(id);
+
+    const res = await stub.fetch("http://localhost/", {
+      body: "invalid-json",
+      method: "POST",
+    });
+
+    expect(res.status).toBe(400);
+
+    const body = await res.json();
+
+    expect(body).toEqual({
+      code: "BAD_REQUEST",
+      message: "Malformed JSON",
+    });
+  });
+
   it("returns 400 when POST payload is invalid", async () => {
     const id = env.DUMMIES.idFromName("test-room");
     const stub = env.DUMMIES.get(id);
@@ -89,16 +108,37 @@ describe("DummiesParty", () => {
 
     expect(res.status).toBe(400);
 
-    const body = JSON.parse(await res.text());
+    const body = await res.json();
 
-    expect(body).toEqual([
-      {
-        code: "invalid_value",
-        message: 'Invalid input: expected "DUMMY_CREATED"',
-        path: ["type"],
-        values: ["DUMMY_CREATED"],
+    expect(body).toEqual({
+      code: "VALIDATION_FAILED",
+      fields: {
+        type: ['Invalid input: expected "DUMMY_CREATED"'],
       },
-    ]);
+      form: [],
+      message: "Validation failed",
+      target: "json",
+    });
+  });
+
+  it("propagates unexpected errors", async () => {
+    const id = env.DUMMIES.idFromName("test-room");
+    const stub = env.DUMMIES.get(id);
+
+    await runInDurableObject(stub, (instance: DummiesParty) => {
+      vi.spyOn(instance, "broadcast").mockImplementation(() => {
+        throw new Error("Broadcast failed");
+      });
+    });
+
+    const payload = { type: "DUMMY_CREATED" };
+
+    const res = await stub.fetch("http://localhost/", {
+      body: JSON.stringify(payload),
+      method: "POST",
+    });
+
+    expect(res.status).toBe(500);
   });
 
   it("returns 405 for unsupported HTTP methods", async () => {
