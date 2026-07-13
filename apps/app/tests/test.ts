@@ -5,6 +5,17 @@ import path from "path";
 export const test = base.extend<{ coverage: void }>({
   coverage: [
     async ({ page }, use, testInfo) => {
+      page.on("console", (consoleMessage) => {
+        if (consoleMessage.type() === "error") {
+          console.error(`[Browser] [Console Error] ${consoleMessage.text()}`);
+        }
+      });
+      page.on("pageerror", (exception) => {
+        console.error(
+          `[Browser] [Page Error] ${exception.stack || exception.message}`,
+        );
+      });
+
       await use();
 
       if (process.env.VITE_COVERAGE === "true") {

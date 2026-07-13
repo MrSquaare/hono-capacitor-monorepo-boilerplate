@@ -1,6 +1,10 @@
 import { expect, test } from "../test";
 
 test.describe("Dummies", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.routeWebSocket("**/parties/dummies/*", () => {});
+  });
+
   test.describe("List", () => {
     test("displays empty list", async ({ page }) => {
       await page.route("**/dummies", async (route) => {

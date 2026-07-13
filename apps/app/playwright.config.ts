@@ -1,5 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
+process.env.VITE_API_BASE_URL = "http://localhost:8787";
 process.env.VITE_API_RETRY = "0";
 process.env.VITE_COVERAGE = "true";
 
@@ -28,7 +29,7 @@ export default defineConfig({
           use: { ...devices["Desktop Safari"] },
         },
       ],
-  reporter: "html",
+  reporter: [["list"], ["html"]],
   retries: process.env.CI ? 2 : 0,
   testDir: "./tests",
   use: {
