@@ -7,7 +7,6 @@
     {
       "binding": "DB",
       "database_name": "dev-db",
-      "database_id": "72f0784e-950d-49bc-b193-3c97f2746041",
       "migrations_dir": "./drizzle/",
     },
   ],
