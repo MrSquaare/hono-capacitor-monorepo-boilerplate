@@ -14,9 +14,10 @@ export default defineConfig({
       enabled: true,
       exclude: [
         ...(configDefaults.coverage?.exclude ?? []),
-        "**/*.mock.ts",
-        "**/*.fixture.ts",
+        "src/**/*.mock.ts",
+        "src/**/*.fixture.ts",
       ],
+      include: ["src/**"],
       provider: "istanbul",
       reporter: ["text", "html", "cobertura"],
     },
