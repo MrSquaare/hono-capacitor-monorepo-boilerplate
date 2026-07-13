@@ -40,7 +40,7 @@ jobs:
         uses: ./.github/actions/setup-env
 
       - name: Install Playwright Browsers
-        run: pnpm --filter @projectname/app exec playwright install --with-deps
+        run: pnpm --filter @projectname/app exec playwright install chromium --with-deps
 
       - name: Build
         run: pnpm build --filter @projectname/app
@@ -56,10 +56,19 @@ jobs:
           path: apps/app/playwright-report/
           retention-days: 7
 
-      - name: Upload coverage report
-        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
-        uses: actions/upload-code-coverage@v1
+      # Commented out as GitHub Code Quality is not available yet for the repository.
+      # - name: Upload coverage report
+      #   if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      #   uses: actions/upload-code-coverage@v1
+      #   with:
+      #     file: apps/app/coverage/cobertura-coverage.xml
+      #     language: JavaScript
+      #     label: code-coverage/app
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
-          file: apps/app/coverage/cobertura-coverage.xml
-          language: JavaScript
-          label: code-coverage/app
+          token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
+          files: apps/app/coverage/cobertura-coverage.xml
+          flags: app
