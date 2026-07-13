@@ -4,8 +4,8 @@ import { vi } from "vitest";
 
 import { errorHandler } from "./error-handler";
 
-vi.mock("./dummy", async (importOriginal) => {
-  const mod = await importOriginal<typeof import("./dummy")>();
+vi.mock("./error-handler", async (importOriginal) => {
+  const mod = await importOriginal<typeof import("./error-handler")>();
 
   return {
     ...mod,
