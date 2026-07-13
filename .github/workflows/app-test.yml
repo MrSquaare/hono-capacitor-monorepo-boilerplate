@@ -24,7 +24,6 @@ on:
 
 permissions:
   contents: read
-  code-quality: write
 
 jobs:
   test:
