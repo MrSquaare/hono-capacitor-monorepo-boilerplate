@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Turborepo
+.turbo/
+
+# Build
+dist/
+
+# Editors
+.idea/
+.vscode/
+
+# macOS
+.DS_Store

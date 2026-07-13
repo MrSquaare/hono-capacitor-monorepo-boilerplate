@@ -1,0 +1,52 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "common": {
+    "loading": "Loading…",
+    "saving": "Saving…",
+    "deleting": "Deleting…",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "cancel": "Cancel",
+    "actions": "Actions"
+  },
+  "dummies": {
+    "common": {
+      "id": "ID",
+      "name": "Name",
+      "age": "Age"
+    },
+    "page": {
+      "title": "Dummies"
+    },
+    "list": {
+      "empty": "No dummies yet. Create one!"
+    },
+    "create": {
+      "title": "Create Dummy"
+    },
+    "edit": {
+      "title": "Edit Dummy"
+    },
+    "detail": {
+      "title": "Dummy Details"
+    },
+    "delete": {
+      "title": "Delete Dummy",
+      "confirm": "Are you sure you want to delete {name}? This action cannot be undone."
+    },
+    "errors": {
+      "load_all": "Failed to load dummies: {error}",
+      "load_one": "Failed to load dummy",
+      "create": "Failed to create dummy",
+      "update": "Failed to update dummy",
+      "delete": "Failed to delete dummy"
+    },
+    "success": {
+      "create": "Dummy created successfully",
+      "update": "Dummy updated successfully",
+      "delete": "Dummy deleted successfully"
+    }
+  }
+}

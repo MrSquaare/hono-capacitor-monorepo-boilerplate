@@ -1,0 +1,22 @@
+# Node
+node_modules/
+
+# pnpm
+.pnpm-store/
+
+# Turborepo
+.turbo/
+
+# Environment variables
+*.env*
+
+# Logs
+*.log
+
+# Editors
+.idea/
+.vscode/**
+!.vscode/extensions.json
+
+# macOS
+.DS_Store

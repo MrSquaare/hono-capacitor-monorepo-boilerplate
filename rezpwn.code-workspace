@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "path": ".",
+    },
+    {
+      "path": "apps/app",
+    },
+    {
+      "path": "apps/server",
+    },
+    {
+      "path": "packages/shared",
+    },
+    {
+      "path": "packages/shared-config",
+    },
+  ],
+}

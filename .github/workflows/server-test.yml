@@ -1,0 +1,62 @@
+name: "@projectname/server Test"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/server/**"
+      - "packages/shared/**"
+      - "packages/shared-config/**"
+      - "pnpm-lock.yaml"
+      - ".github/actions/setup-env/**"
+      - ".github/workflows/server-test.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "apps/server/**"
+      - "packages/shared/**"
+      - "packages/shared-config/**"
+      - "pnpm-lock.yaml"
+      - ".github/actions/setup-env/**"
+      - ".github/workflows/server-test.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
+
+      - name: Build
+        run: pnpm build --filter @projectname/server
+
+      - name: Test
+        run: pnpm test --filter @projectname/server
+
+      # Commented out as GitHub Code Quality is not available yet for the repository.
+      # - name: Upload coverage report
+      #   if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      #   uses: actions/upload-code-coverage@v1
+      #   with:
+      #     file: apps/server/coverage/cobertura-coverage.xml
+      #     language: JavaScript
+      #     label: code-coverage/server
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
+          files: apps/server/coverage/cobertura-coverage.xml
+          flags: server

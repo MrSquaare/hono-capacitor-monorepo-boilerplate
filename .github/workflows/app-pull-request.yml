@@ -1,0 +1,36 @@
+name: "@projectname/app Pull Request"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "apps/app/**"
+      - "apps/server/**"
+      - "pnpm-lock.yaml"
+      - "packages/shared/**"
+      - "packages/shared-config/**"
+      - ".github/actions/setup-env/**"
+      - ".github/workflows/app-pull-request.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    name: Checks
+
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup environment
+        uses: ./.github/actions/setup-env
+
+      - name: Build
+        run: pnpm build --filter @projectname/app
+
+      - name: Check
+        run: pnpm check --filter @projectname/app

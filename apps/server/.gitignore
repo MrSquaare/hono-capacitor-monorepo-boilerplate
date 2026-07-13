@@ -1,0 +1,30 @@
+# Node
+node_modules/
+
+# Turborepo
+.turbo/
+
+# Wrangler
+.wrangler/
+
+# Drizzle
+drizzle/
+
+# Environment variables
+*.env*
+
+# Logs
+*.log
+
+# Build
+dist/
+
+# Coverage
+coverage/
+
+# Editors
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
