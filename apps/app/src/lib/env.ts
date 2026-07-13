@@ -2,10 +2,17 @@ import { z } from "zod";
 
 const envSchema = z.object({
   VITE_API_BASE_URL: z.url("VITE_API_BASE_URL must be a valid URL"),
-  VITE_API_RETRY: z.coerce
-    .number("VITE_API_RETRY must be a valid number")
-    .int("VITE_API_RETRY must be an integer")
-    .nonnegative("VITE_API_RETRY must be non-negative"),
+  VITE_API_RETRY: z
+    .string("VITE_API_RETRY must be a valid number")
+    .trim()
+    .min(1, "VITE_API_RETRY must be a valid number")
+    .transform(Number)
+    .pipe(
+      z
+        .number("VITE_API_RETRY must be a valid number")
+        .int("VITE_API_RETRY must be an integer")
+        .nonnegative("VITE_API_RETRY must be non-negative"),
+    ),
 });
 
 const env = envSchema.parse({
