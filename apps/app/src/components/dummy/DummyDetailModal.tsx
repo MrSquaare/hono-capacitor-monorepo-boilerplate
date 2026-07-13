@@ -36,12 +36,14 @@ export const DummyDetailModal: FC<DummyDetailModalProps> = ({
 
   return (
     <Modal
+      {...props}
       onOpenChange={(e) => {
+        props.onOpenChange?.(e);
+
         if (!e.open) {
           onClose();
         }
       }}
-      {...props}
     >
       <ModalHeader title={m["dummies.detail.title"]()} />
       <ModalBody>
