@@ -39,6 +39,9 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-env
 
+      - name: Build
+        run: pnpm build --filter @projectname/server
+
       - name: Test
         run: pnpm test --filter @projectname/server
 
