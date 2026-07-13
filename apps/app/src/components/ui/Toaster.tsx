@@ -64,7 +64,10 @@ export const Toaster: FC = () => {
                 {toast.description}
               </Toast.Description>
             )}
-            <Toast.CloseTrigger className={classes.closeTrigger}>
+            <Toast.CloseTrigger
+              aria-label="Close notification"
+              className={classes.closeTrigger}
+            >
               ✕
             </Toast.CloseTrigger>
           </Toast.Root>
