@@ -157,7 +157,7 @@ class Orchestrator {
     this.exitCodeTarget = code;
 
     if (origin === "Vite") this.capacitor.kill("SIGINT");
-    if (origin === "Capacitor" && code !== 0) this.vite.kill("SIGINT");
+    if (origin === "Capacitor") this.vite.kill("SIGINT");
 
     this.evaluateShutdownState();
   }
