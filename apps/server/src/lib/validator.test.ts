@@ -36,7 +36,9 @@ describe("validator", () => {
 
     const callback = mockedZValidator.mock.calls[0]?.[2];
 
-    const result = callback?.(
+    expect(callback).toBeDefined();
+
+    const result = callback!(
       { data: { name: "John" }, success: true, target: "json" },
       mockedContext,
     );
@@ -63,7 +65,9 @@ describe("validator", () => {
 
     const callback = mockedZValidator.mock.calls[0]?.[2];
 
-    const result = callback?.(
+    expect(callback).toBeDefined();
+
+    const result = callback!(
       {
         data: undefined,
         error: zodResult.error,
