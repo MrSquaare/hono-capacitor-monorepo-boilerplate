@@ -25,17 +25,25 @@ export const writeRawCoverageFile = (filename: string, coverage: unknown) => {
 };
 
 export const collectRawCoverage = async (testInfo: TestInfo, page: Page) => {
+  if (process.env.VITE_COVERAGE !== "true") {
+    return;
+  }
+
   try {
     const coverage = await page.evaluate(
       () => (window as { __coverage__?: unknown }).__coverage__,
     );
 
-    if (coverage) {
-      const filename = `${testInfo.testId}-${testInfo.project.name}.json`;
-
-      writeRawCoverageFile(filename, coverage);
+    if (!coverage) {
+      throw new Error("window.__coverage__ is undefined or missing");
     }
-  } catch {
-    // Do nothing
+
+    const filename = `${testInfo.testId}-${testInfo.project.name}.json`;
+
+    writeRawCoverageFile(filename, coverage);
+  } catch (error) {
+    console.error("Error collecting raw coverage:", error);
+
+    throw error;
   }
 };
