@@ -15,8 +15,10 @@
     "run:ios": "cap run ios",
     "check": "tsc -b --noEmit && eslint . && prettier . --check",
     "check:fix": "tsc -b --noEmit && eslint . --fix && prettier . --write",
-    "test": "playwright test && nyc report --reporter=text --reporter=html --reporter=cobertura",
-    "clean": "del-cli dist/ styled-system/ test-results/ playwright-report/ .nyc_output/ coverage/ src/paraglide/ node_modules/.cache/"
+    "test:unit": "vitest run",
+    "test:e2e": "del coverage/e2e/ && playwright test && nyc report --temp-dir coverage/e2e/temp/ --reporter=text --reporter=html --reporter=cobertura --report-dir coverage/e2e/",
+    "test": "pnpm run test:unit && pnpm run test:e2e",
+    "clean": "del dist/ styled-system/ test-results/ playwright-report/ .nyc_output/ coverage/ src/paraglide/ node_modules/.cache/"
   },
   "dependencies": {
     "@ark-ui/react": "^5.37.2",
@@ -57,6 +59,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "@vitest/coverage-istanbul": "^4.1.10",
     "del-cli": "^7.0.0",
     "eslint": "^10.7.0",
     "eslint-plugin-react-hooks": "^7.1.1",
@@ -66,6 +69,7 @@
     "typescript": "~6.0.3",
     "vite": "^8.1.4",
     "vite-plugin-istanbul": "^9.0.1",
-    "vite-plugin-pwa": "^1.3.0"
+    "vite-plugin-pwa": "^1.3.0",
+    "vitest": "^4.1.10"
   }
 }
