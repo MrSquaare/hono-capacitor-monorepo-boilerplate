@@ -8,7 +8,10 @@ on:
       - "apps/server/**"
       - "packages/shared/**"
       - "packages/shared-config/**"
+      - "package.json"
       - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
       - ".github/actions/setup-env/**"
       - ".github/workflows/server-pull-request.yml"
 
