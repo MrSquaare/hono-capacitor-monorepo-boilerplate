@@ -15,7 +15,7 @@
     "check": "tsc --noEmit && eslint . && prettier . --check",
     "check:fix": " tsc --noEmit && eslint . --fix && prettier . --write",
     "test": "vitest run",
-    "clean": "del-cli .wrangler/tmp/ dist/ node_modules/.cache/",
+    "clean": "del .wrangler/tmp/ dist/ node_modules/.cache/",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "wrangler d1 migrations apply DB",
     "deploy": "wrangler deploy --minify"

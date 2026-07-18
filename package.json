@@ -10,7 +10,7 @@
     "check": "turbo check --continue",
     "check:fix": "turbo check:fix --continue",
     "test": "turbo test",
-    "clean": "turbo clean --continue && del-cli .turbo/ **/.turbo/ node_modules/.cache/",
+    "clean": "turbo clean --continue && del .turbo/ **/.turbo/ node_modules/.cache/",
     "deps:update": "taze",
     "deps:upgrade": "taze -w"
   },

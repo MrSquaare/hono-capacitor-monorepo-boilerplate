@@ -13,7 +13,7 @@
     "dev": "tsdown --watch",
     "check": "tsc --noEmit && eslint . && prettier . --check",
     "check:fix": "tsc --noEmit && eslint . --fix && prettier . --write",
-    "clean": "del-cli dist/"
+    "clean": "del dist/"
   },
   "dependencies": {
     "zod": "^4.4.3"
