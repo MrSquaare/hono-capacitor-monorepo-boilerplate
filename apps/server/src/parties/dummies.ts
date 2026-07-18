@@ -53,7 +53,12 @@ export class DummiesParty extends Server {
 
     return Response.json(
       getAPIError(APIErrorCode.METHOD_NOT_ALLOWED, "Method not allowed"),
-      { status: 405 },
+      {
+        headers: {
+          Allow: "POST",
+        },
+        status: 405,
+      },
     );
   }
 }

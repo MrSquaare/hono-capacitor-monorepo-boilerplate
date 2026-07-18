@@ -160,6 +160,7 @@ describe("DummiesParty", () => {
     });
 
     expect(res.status).toBe(405);
+    expect(res.headers.get("Allow")).toBe("POST");
 
     const body = await res.json();
 
