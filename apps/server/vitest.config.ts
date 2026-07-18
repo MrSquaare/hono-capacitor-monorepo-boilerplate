@@ -17,9 +17,9 @@ export default defineConfig({
         "src/**/*.mock.ts",
         "src/**/*.fixture.ts",
       ],
-      include: ["src/**"],
       provider: "istanbul",
       reporter: ["text", "html", "cobertura"],
     },
+    include: ["src/**/*.test.ts"],
   },
 });
