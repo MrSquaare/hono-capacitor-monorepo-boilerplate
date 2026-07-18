@@ -19,10 +19,18 @@ export default defineConfig({
     tanstackRouter(),
     react(),
     VitePWA(vitePWAConfig),
-    istanbul({
-      exclude: ["src/paraglide/**", "src/main.tsx", "src/routeTree.gen.ts"],
-      include: "src/**",
-    }),
+    ...(process.env.VITE_COVERAGE === "true"
+      ? [
+          istanbul({
+            exclude: [
+              "src/paraglide/**",
+              "src/main.tsx",
+              "src/routeTree.gen.ts",
+            ],
+            include: "src/**",
+          }),
+        ]
+      : []),
   ],
   resolve: {
     tsconfigPaths: true,
