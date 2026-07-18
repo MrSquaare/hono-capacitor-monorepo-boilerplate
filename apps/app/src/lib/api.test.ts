@@ -9,19 +9,19 @@ describe("handleAPIResponse", () => {
   });
 
   it("returns parsed JSON data for a successful response", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       json: { foo: "bar" },
       status: 200,
     });
 
-    const result = await handleAPIResponse(mockResponse);
+    const result = await handleAPIResponse(mockedResponse);
 
     expect(result).toEqual({ foo: "bar" });
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws ValidationAPIError when error response body matches validation error schema", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 400,
       text: JSON.stringify({
         code: "VALIDATION_FAILED",
@@ -32,7 +32,7 @@ describe("handleAPIResponse", () => {
       }),
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new ValidationAPIError(
         400,
         "VALIDATION_FAILED",
@@ -42,11 +42,11 @@ describe("handleAPIResponse", () => {
       ),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when error response body matches API error schema", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 401,
       text: JSON.stringify({
         code: "UNAUTHORIZED",
@@ -54,76 +54,76 @@ describe("handleAPIResponse", () => {
       }),
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(401, "UNAUTHORIZED", "You are not authorized"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError error response body is not JSON", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 500,
       text: "Internal Server Error",
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(500, "API_UNKNOWN_ERROR", "Internal Server Error"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when reading text stream fails for successful response", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 200,
     });
 
-    mockResponse.text.mockRejectedValueOnce(new Error("Stream abort"));
+    mockedResponse.text.mockRejectedValueOnce(new Error("Stream abort"));
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(200, "API_DATA_ERROR", "Invalid data received from the API"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when successful response body is not valid JSON", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 200,
       text: "Invalid JSON",
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(200, "API_DATA_ERROR", "Invalid data received from the API"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when reading text stream fails for error response", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 504,
     });
 
-    mockResponse.text.mockRejectedValueOnce(new Error("Stream abort"));
+    mockedResponse.text.mockRejectedValueOnce(new Error("Stream abort"));
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(504, "API_UNKNOWN_ERROR", "An unexpected error occurred"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when error response body does not match API error schema", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 502,
       text: JSON.stringify({
         error: "Invalid response format",
       }),
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(
         502,
         "API_UNKNOWN_ERROR",
@@ -131,19 +131,19 @@ describe("handleAPIResponse", () => {
       ),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
   it("throws APIError when error response body is empty", async () => {
-    const mockResponse = createMockedResponse({
+    const mockedResponse = createMockedResponse({
       status: 502,
       text: "",
     });
 
-    await expect(handleAPIResponse(mockResponse)).rejects.toThrow(
+    await expect(handleAPIResponse(mockedResponse)).rejects.toThrow(
       new APIError(502, "API_UNKNOWN_ERROR", "An unexpected error occurred"),
     );
 
-    expect(mockResponse.text).toHaveBeenCalledTimes(1);
+    expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 });
