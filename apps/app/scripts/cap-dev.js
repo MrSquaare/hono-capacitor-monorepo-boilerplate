@@ -82,6 +82,10 @@ class ProcessWrapper {
 
     this.instance.stdout.on("data", onStdoutData);
     this.instance.on("exit", onExitCallback);
+    this.instance.on("error", (err) => {
+      console.error(`❌ Failed to start process ${this.name}:`, err);
+      onExitCallback(1);
+    });
   }
 
   writeToStdin(data) {
@@ -183,15 +187,20 @@ class Orchestrator {
     this.terminal.switchFocus(this.capacitor);
 
     let isCapacitorReady = false;
+    let buffer = "";
 
     this.capacitor.spawn(
       (chunk) => {
         process.stdout.write(chunk);
 
-        if (!isCapacitorReady && /App running/i.test(chunk.toString())) {
-          isCapacitorReady = true;
+        if (!isCapacitorReady) {
+          buffer = (buffer + chunk.toString()).slice(-1000);
 
-          this.terminal.switchFocus(this.vite);
+          if (/App running/i.test(buffer)) {
+            isCapacitorReady = true;
+
+            this.terminal.switchFocus(this.vite);
+          }
         }
       },
       (code) => this.handleProcessExit("Capacitor", code ?? 1),
@@ -203,15 +212,20 @@ class Orchestrator {
     this.terminal.switchFocus(this.vite);
 
     let isViteReady = false;
+    let buffer = "";
 
     this.vite.spawn(
       (chunk) => {
         process.stdout.write(chunk);
 
-        if (!isViteReady && /show help/i.test(chunk.toString())) {
-          isViteReady = true;
+        if (!isViteReady) {
+          buffer = (buffer + chunk.toString()).slice(-1000);
 
-          this.launchCapacitor();
+          if (/show help/i.test(buffer)) {
+            isViteReady = true;
+
+            this.launchCapacitor();
+          }
         }
       },
       (code) => this.handleProcessExit("Vite", code ?? 0),
