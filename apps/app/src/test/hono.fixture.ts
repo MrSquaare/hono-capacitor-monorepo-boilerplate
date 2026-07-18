@@ -25,10 +25,10 @@ export const createMockedResponse = <
 
   if (json !== undefined) {
     jsonSpy.mockResolvedValueOnce(json);
-    textSpy.mockImplementationOnce(() => JSON.stringify(json));
+    textSpy.mockImplementationOnce(async () => JSON.stringify(json));
   } else if (text !== undefined) {
     textSpy.mockResolvedValueOnce(text);
-    jsonSpy.mockImplementationOnce(() => JSON.parse(text));
+    jsonSpy.mockImplementationOnce(async () => JSON.parse(text));
   }
 
   const response = {
