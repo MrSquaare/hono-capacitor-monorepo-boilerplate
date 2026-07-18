@@ -62,18 +62,35 @@ jobs:
           retention-days: 7
 
       # Commented out as GitHub Code Quality is not available yet for the repository.
-      # - name: Upload coverage report
+      # - name: Upload Unit coverage report
       #   if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
       #   uses: actions/upload-code-coverage@v1
       #   with:
-      #     file: apps/app/coverage/cobertura-coverage.xml
+      #     file: apps/app/coverage/unit/cobertura-coverage.xml
       #     language: JavaScript
-      #     label: code-coverage/app
+      #     label: code-coverage/app-unit
 
-      - name: Upload coverage reports to Codecov
+      # Commented out as GitHub Code Quality is not available yet for the repository.
+      # - name: Upload E2E coverage report
+      #   if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      #   uses: actions/upload-code-coverage@v1
+      #   with:
+      #     file: apps/app/coverage/e2e/cobertura-coverage.xml
+      #     language: JavaScript
+      #     label: code-coverage/app-e2e
+
+      - name: Upload Unit coverage reports to Codecov
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           disable_search: true
-          files: apps/app/coverage/cobertura-coverage.xml
-          flags: app
+          files: apps/app/coverage/unit/cobertura-coverage.xml
+          flags: app-unit
+
+      - name: Upload E2E coverage reports to Codecov
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
+          files: apps/app/coverage/e2e/cobertura-coverage.xml
+          flags: app-e2e
