@@ -40,10 +40,15 @@ export type ButtonProps = ComponentProps<"button"> &
 export const Button: FC<ButtonProps> = ({
   className,
   size,
+  type = "button",
   variant,
   ...props
 }) => {
   return (
-    <button className={cx(recipe({ size, variant }), className)} {...props} />
+    <button
+      className={cx(recipe({ size, variant }), className)}
+      type={type}
+      {...props}
+    />
   );
 };
