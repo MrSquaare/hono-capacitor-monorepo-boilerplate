@@ -20,6 +20,26 @@ describe("handleAPIResponse", () => {
     expect(mockedResponse.text).toHaveBeenCalledTimes(1);
   });
 
+  it.each([
+    { label: "false", value: false },
+    { label: "0", value: 0 },
+    { label: '""', value: "" },
+    { label: "null", value: null },
+  ])(
+    "returns parsed falsy value ($label) for a successful response",
+    async ({ value }) => {
+      const mockedResponse = createMockedResponse({
+        json: value,
+        status: 200,
+      });
+
+      const result = await handleAPIResponse(mockedResponse);
+
+      expect(result).toEqual(value);
+      expect(mockedResponse.text).toHaveBeenCalledTimes(1);
+    },
+  );
+
   it("throws ValidationAPIError when error response body matches validation error schema", async () => {
     const mockedResponse = createMockedResponse({
       status: 400,

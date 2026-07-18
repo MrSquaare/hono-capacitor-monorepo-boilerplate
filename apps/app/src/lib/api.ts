@@ -72,7 +72,7 @@ export const handleAPIResponse = async <TResponse extends AnyJSONResponse>(
   }
 
   if (response.ok) {
-    if (data) {
+    if (data !== undefined) {
       return data as ExtractSuccessJSON<TResponse>;
     }
 
