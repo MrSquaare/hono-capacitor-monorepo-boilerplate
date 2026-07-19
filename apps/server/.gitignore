@@ -7,9 +7,6 @@ node_modules/
 # Wrangler
 .wrangler/
 
-# Drizzle
-drizzle/
-
 # Environment variables
 *.env*
 

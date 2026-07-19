@@ -7,7 +7,6 @@ process.env.VITE_COVERAGE = "true";
 export default defineConfig({
   forbidOnly: !!process.env.CI,
   fullyParallel: true,
-  globalSetup: "./tests/global-setup.ts",
   projects: process.env.CI
     ? [
         {

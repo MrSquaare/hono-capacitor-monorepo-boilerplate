@@ -16,15 +16,15 @@ describe("errorHandler", () => {
     const consoleSpy = vi
       .spyOn(console, "error")
       .mockReturnValueOnce(undefined);
-    const mockJsonResponse = {} as Response;
+    const mockedResponse = {} as Response;
     const mockedContext = createMockedContext();
     const error = new HTTPException(404, { message: "Not found detail" });
 
-    mockedContext.json.mockReturnValueOnce(mockJsonResponse);
+    mockedContext.json.mockReturnValueOnce(mockedResponse);
 
     const result = errorHandler(error, mockedContext);
 
-    expect(result).toBe(mockJsonResponse);
+    expect(result).toBe(mockedResponse);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith(error);
     expect(mockedContext.json).toHaveBeenCalledWith(
@@ -40,17 +40,17 @@ describe("errorHandler", () => {
     const consoleSpy = vi
       .spyOn(console, "error")
       .mockReturnValueOnce(undefined);
-    const mockJsonResponse = {} as Response;
+    const mockedResponse = {} as Response;
     const mockedContext = createMockedContext();
     const error = new HTTPException(432 as ContentfulStatusCode, {
       message: "432 detail",
     });
 
-    mockedContext.json.mockReturnValueOnce(mockJsonResponse);
+    mockedContext.json.mockReturnValueOnce(mockedResponse);
 
     const result = errorHandler(error, mockedContext);
 
-    expect(result).toBe(mockJsonResponse);
+    expect(result).toBe(mockedResponse);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith(error);
     expect(mockedContext.json).toHaveBeenCalledWith(
@@ -66,15 +66,15 @@ describe("errorHandler", () => {
     const consoleSpy = vi
       .spyOn(console, "error")
       .mockReturnValueOnce(undefined);
-    const mockJsonResponse = {} as Response;
+    const mockedResponse = {} as Response;
     const mockedContext = createMockedContext();
     const error = new HTTPException(500, { message: "Sensitive detail" });
 
-    mockedContext.json.mockReturnValueOnce(mockJsonResponse);
+    mockedContext.json.mockReturnValueOnce(mockedResponse);
 
     const result = errorHandler(error, mockedContext);
 
-    expect(result).toBe(mockJsonResponse);
+    expect(result).toBe(mockedResponse);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith(error);
     expect(mockedContext.json).toHaveBeenCalledWith(
@@ -90,15 +90,15 @@ describe("errorHandler", () => {
     const consoleSpy = vi
       .spyOn(console, "error")
       .mockReturnValueOnce(undefined);
-    const mockJsonResponse = {} as Response;
+    const mockedResponse = {} as Response;
     const mockedContext = createMockedContext();
     const error = new Error("Sensitive detail");
 
-    mockedContext.json.mockReturnValueOnce(mockJsonResponse);
+    mockedContext.json.mockReturnValueOnce(mockedResponse);
 
     const result = errorHandler(error, mockedContext);
 
-    expect(result).toBe(mockJsonResponse);
+    expect(result).toBe(mockedResponse);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
     expect(consoleSpy).toHaveBeenCalledWith(error);
     expect(mockedContext.json).toHaveBeenCalledWith(

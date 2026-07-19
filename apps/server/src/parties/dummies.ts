@@ -22,16 +22,9 @@ export class DummiesParty extends Server {
       try {
         json = await request.json();
       } catch {
-        return new Response(
-          JSON.stringify(
-            getAPIError(APIErrorCode.BAD_REQUEST, "Malformed JSON"),
-          ),
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-            status: 400,
-          },
+        return Response.json(
+          getAPIError(APIErrorCode.BAD_REQUEST, "Malformed JSON"),
+          { status: 400 },
         );
       }
 
@@ -40,24 +33,32 @@ export class DummiesParty extends Server {
 
         this.broadcast(JSON.stringify(validated));
 
-        return new Response("OK", { status: 200 });
+        return Response.json({ success: true }, { status: 200 });
       } catch (error) {
         if (error instanceof z.ZodError) {
-          return new Response(
-            JSON.stringify(getValidationAPIError(error, "json")),
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              status: 400,
-            },
-          );
+          return Response.json(getValidationAPIError(error, "json"), {
+            status: 400,
+          });
         }
 
-        throw error;
+        return Response.json(
+          getAPIError(
+            APIErrorCode.INTERNAL_SERVER_ERROR,
+            "Internal server error",
+          ),
+          { status: 500 },
+        );
       }
     }
 
-    return new Response("Method not allowed", { status: 405 });
+    return Response.json(
+      getAPIError(APIErrorCode.METHOD_NOT_ALLOWED, "Method not allowed"),
+      {
+        headers: {
+          Allow: "POST",
+        },
+        status: 405,
+      },
+    );
   }
 }

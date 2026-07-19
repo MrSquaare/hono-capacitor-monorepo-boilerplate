@@ -13,7 +13,7 @@
     "dev": "tsdown --watch",
     "check": "tsc --noEmit && eslint . && prettier . --check",
     "check:fix": "tsc --noEmit && eslint . --fix && prettier . --write",
-    "clean": "del-cli dist/"
+    "clean": "del dist/"
   },
   "dependencies": {
     "zod": "^4.4.3"
@@ -23,7 +23,7 @@
     "del-cli": "^7.0.0",
     "eslint": "^10.7.0",
     "prettier": "^3.9.5",
-    "tsdown": "^0.22.4",
+    "tsdown": "^0.22.9",
     "typescript": "^6.0.3"
   }
 }

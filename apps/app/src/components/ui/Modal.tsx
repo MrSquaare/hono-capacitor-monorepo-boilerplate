@@ -125,7 +125,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
   return (
     <div className={cx(classes.header, className)} {...props}>
       <Dialog.Title className={classes.title}>{title}</Dialog.Title>
-      <Dialog.CloseTrigger className={classes.closeTrigger}>
+      <Dialog.CloseTrigger aria-label="Close" className={classes.closeTrigger}>
         ✕
       </Dialog.CloseTrigger>
     </div>

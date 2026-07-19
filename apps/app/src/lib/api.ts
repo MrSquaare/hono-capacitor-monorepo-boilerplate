@@ -53,9 +53,37 @@ export class ValidationAPIError extends APIError {
 export const handleAPIResponse = async <TResponse extends AnyJSONResponse>(
   response: TResponse,
 ): Promise<ExtractSuccessJSON<TResponse>> => {
-  const data = await response.json();
+  let text: string | undefined;
 
-  if (!response.ok) {
+  try {
+    text = await response.text();
+  } catch (error) {
+    console.error("Error reading response text:", error);
+  }
+
+  let data: unknown;
+
+  if (text !== undefined) {
+    try {
+      data = JSON.parse(text);
+    } catch (error) {
+      console.error("Error parsing response JSON:", error);
+    }
+  }
+
+  if (response.ok) {
+    if (data !== undefined) {
+      return data as ExtractSuccessJSON<TResponse>;
+    }
+
+    throw new APIError(
+      response.status,
+      "API_DATA_ERROR",
+      "Invalid data received from the API",
+    );
+  }
+
+  if (data) {
     const validationAPIErrorRes = validationAPIErrorSchema.safeParse(data);
 
     if (validationAPIErrorRes.success) {
@@ -77,13 +105,11 @@ export const handleAPIResponse = async <TResponse extends AnyJSONResponse>(
         apiErrorRes.data.message,
       );
     }
-
-    throw new APIError(
-      response.status,
-      "API_ERROR",
-      "An unexpected error occurred",
-    );
   }
 
-  return data as ExtractSuccessJSON<TResponse>;
+  throw new APIError(
+    response.status,
+    "API_UNKNOWN_ERROR",
+    text?.trim() || "An unexpected error occurred",
+  );
 };

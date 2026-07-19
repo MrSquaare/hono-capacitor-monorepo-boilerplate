@@ -6,7 +6,10 @@ import z from "zod";
 import { validator } from "../lib/validator";
 import { dbMiddleware } from "../middlewares/db";
 import { dummyServiceMiddleware } from "../middlewares/dummy";
-import { createDummyPayloadSchema } from "../schemas/dummy";
+import {
+  createDummyPayloadSchema,
+  updateDummyPayloadSchema,
+} from "../schemas/dummy";
 import { getAPIError } from "../utils/error";
 
 export const dummiesApp = new Hono()
@@ -64,7 +67,7 @@ export const dummiesApp = new Hono()
   .put(
     "/:id",
     validator("param", z.object({ id: z.coerce.number() })),
-    validator("json", createDummyPayloadSchema.partial()),
+    validator("json", updateDummyPayloadSchema),
     async (c) => {
       const { dummyService } = c.var;
       const { id } = c.req.valid("param");

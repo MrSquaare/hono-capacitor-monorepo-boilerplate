@@ -68,7 +68,10 @@ describe("DummiesParty", () => {
     });
 
     expect(res.status).toBe(200);
-    expect(await res.text()).toBe("OK");
+
+    const body = await res.json();
+
+    expect(body).toEqual({ success: true });
 
     const received = await messagePromise;
 
@@ -139,6 +142,13 @@ describe("DummiesParty", () => {
     });
 
     expect(res.status).toBe(500);
+
+    const body = await res.json();
+
+    expect(body).toEqual({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Internal server error",
+    });
   });
 
   it("returns 405 for unsupported HTTP methods", async () => {
@@ -150,6 +160,13 @@ describe("DummiesParty", () => {
     });
 
     expect(res.status).toBe(405);
-    expect(await res.text()).toBe("Method not allowed");
+    expect(res.headers.get("Allow")).toBe("POST");
+
+    const body = await res.json();
+
+    expect(body).toEqual({
+      code: "METHOD_NOT_ALLOWED",
+      message: "Method not allowed",
+    });
   });
 });

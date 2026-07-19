@@ -22,9 +22,12 @@ export default defineConfig({
     ...(process.env.VITE_COVERAGE === "true"
       ? [
           istanbul({
-            exclude: ["node_modules", "src/paraglide/**"],
-            include: "src/*",
-            requireEnv: false,
+            exclude: [
+              "src/paraglide/**",
+              "src/main.tsx",
+              "src/routeTree.gen.ts",
+            ],
+            include: "src/**",
           }),
         ]
       : []),
