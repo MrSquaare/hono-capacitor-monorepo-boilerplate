@@ -97,11 +97,19 @@ class ManagedProcess {
         listener(chunk);
       }
     });
-    this.#instance.on("exit", (code) => {
-      this.#exit("exited", code ?? 0);
+    this.#instance.on("exit", (code, signal) => {
+      const exitCode =
+        code !== null
+          ? code
+          : signal
+            ? 128 + (os.constants.signals[signal] || 0)
+            : 0;
+
+      this.#exit("exited", exitCode);
     });
     this.#instance.on("error", (err) => {
       console.error(`❌ Failed to spawn "${this.name}":`, err.message);
+
       this.#exit("failed", 1);
     });
   }
