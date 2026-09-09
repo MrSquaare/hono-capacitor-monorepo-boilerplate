@@ -25,7 +25,7 @@
     "@projectname/shared": "workspace:*",
     "better-auth": "^1.6.23",
     "drizzle-orm": "1.0.0-rc.4",
-    "hono": "^4.12.30",
+    "hono": "^4.13.5",
     "hono-party": "^2.1.0",
     "partyserver": "^0.5.8",
     "zod": "^4.4.3"
