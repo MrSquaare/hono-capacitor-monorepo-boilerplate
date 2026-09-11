@@ -41,7 +41,7 @@
     "prettier": "^3.9.5",
     "tsdown": "^0.22.9",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10",
+    "vitest": "^4.1.11",
     "wrangler": "^4.112.0"
   }
 }
